@@ -1,22 +1,32 @@
-\documentclass[10pt]{article}
+\documentclass[10pt,a4paper]{article}
 
-% Geometry and layout
+% Hyperlinks
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=black,  % Enable colored links
+    linkcolor=black,   % Color for internal links
+    urlcolor=black      % Color for external links
+}
+
+% Graphics and Gemotery
 \usepackage[a4paper, margin=0pt]{geometry}
 \geometry{paperwidth=10cm, paperheight=10cm}
-
-% Essential packages
-\usepackage[utf8]{inputenc} % UTF-8 input encoding
-\usepackage[T1]{fontenc} % T1 font encoding for accented characters
 \usepackage{graphicx} % For including images
 \usepackage{tikz} % For advanced graphics
+\pagestyle{empty}
 
-% Arabic and UTF-8 setup
-\usepackage{arabtex} % For Arabic transliteration
-\usepackage{utf8} % For Unicode support
-\setcode{utf8}
+% Essential packages for UTF-8 and fonts
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{graphicx}
+\usepackage{tikz}
+\usepackage{fontspec} % Required for polyglossia
 
-%Make possible comment
-\usepackage{comment}
+% Multilingual and Arabic support
+\usepackage{polyglossia} % Modern multilingual support
+\setmainlanguage{french}
+\setotherlanguage{arabic}
+\newfontfamily\arabicfont[Script=Arabic]{Noto Naskh Arabic}
 
 %Make font bigger
 \newcommand{\writeBig}[1]{
@@ -25,7 +35,7 @@
 
 %Same for Arabic
 \newcommand{\writeBigArb}[1]{
-\writeBig{\RL{#1}}
+\writeBig{\textarabic{#1}}
 }
 
 %Write with shadow
@@ -45,10 +55,10 @@
 \newpage
 \begin{tikzpicture}
     \node[anchor=center] (image) at (5,5) 		{\includegraphics[width=8.5cm,height=8.5cm]{#1}};
-    	\writeShadow{0.8}{5}{7}{Imagier des trois langues}
-    	\writeShadow{0.6}{5}{4.5}{Français - Espagnol - Arabe}
-	\writeShadow{0.6}{5}{3}{Volume {#2}}  
-	\writeShadow{0.6}{5}{1.5}{Al Kashy}
+    	\writeShadow{0.7}{5}{7}{Imagier des trois langues}
+    	\writeShadow{0.5}{5}{4.5}{Français - Espagnol - Arabe}
+	\writeShadow{0.5}{5}{3}{Volume {#2}}  
+	\writeShadow{0.5}{5}{1.5}{Al Kashy}
  \end{tikzpicture}
 }
 
@@ -74,13 +84,14 @@
 %For the image the French, Spanish, Arabic word
 \newcommand{\writepage}[3]{
 \newpage
-\begin{tikzpicture}[remember picture, overlay]
-    \node[anchor=center, text width=8.5cm, align=center] at (current page.center) {
-        \writeBig{#1}		\\[1cm] %French
-        \writeBig{#2} 		\\[1cm]	%Spanish
-        \writeBigArb{#3}		\\[1cm]	%Arabic 
-    };
-\end{tikzpicture}
+\vspace*{1.5cm}
+\begin{center}
+	\writeBig{#1} \\
+	\vspace*{1.5cm}
+	\writeBig{#2} \\
+	\vspace*{1.5cm}
+	\writeBigArb{#3} \\
+\end{center}
 }
 
 %The final page is always the same
@@ -98,110 +109,123 @@
 \end{tikzpicture}
 }
 
-% Remove page numbers
-\pagestyle{empty}
+
+\newcommand{\writepageDic}[3]{
+\newpage
+\vspace*{1.5cm}
+\begin{center}
+	\href{https://dictionnaire.lerobert.com/definition/#1}{\writeBig{#1}} \\
+	\vspace*{1.5cm}
+	\href{https://dle.rae.es/#2}{\writeBig{#2}} \\
+	\vspace*{1.5cm}
+	\href{https://context.reverso.net/traduction/francais-arabe/#1}{\writeBigArb{#3}} \\
+\end{center}
+}
+
+\usepackage{comment}
 
 \begin{document}
+%\begin{comment}
 %-1.Page de garde --- Papa et Maman avec du texte
 \writeCover{papamama.png}{1}
 %0.Arbre Tricolore - Explication et Principe - Un arbre des oiseaux de trois couleurs différentes
 \writeConcept{treeBird.png}
 %1.baba et mama
 \paintpage{papamama.png}
-\writepage{Papa ~ Maman}{Papá ~ Mamá}{بابا   ماما}
+\writepage{Papa ~~~ Maman}{Papá ~~~ Mamá}{بـــابـــا ~~~ مـــامـــا}
 %2.papaye
 \paintpage{papaye.png}
-\writepage{Papaye}{Papaya}{بابايا}
+\writepageDic{Papaye}{Papaya}{بـــابـــايـــا}
 %3.babouin
 \paintpage{babouin.png}
-\writepage{Babouin}{Babuino}{بابون}
+\writepageDic{Babouin}{Babuino}{بـــابـــون}
 %4.balcon
 \paintpage{balcon.png}
-\writepage{Le balcon}{El balcon}{بـالـيـكـون}
+\writepageDic{Le balcon}{El balcon}{بـــالـــيـــكـــون}
 %5.cacao
 \paintpage{cacao.png}
-\writepage{Cacao}{Cacao}{كـاكـاو}
+\writepageDic{Cacao}{Cacao}{كـــاكـــاو}
 %6.chocolat
 \paintpage{chocolat.png}
-\writepage{Chocolat}{Chocolate}{شوكولاتة}
+\writepageDic{Chocolat}{Chocolate}{شـــوكـــولاتـــة}
 %7.caramel
 \paintpage{caramel.png}
-\writepage{Caramel}{Caramelo}{كَراميل}
+\writepageDic{Caramel}{Caramelo}{كَـــرامـــيـــل}
 %8.canari
 \paintpage{canari2.png}
-\writepage{Canari}{Canario}{كَناري}
+\writepageDic{Canari}{Canario}{كَـــنـــاري}
 %9.cerise
 \paintpage{cerise.png}
-\writepage{Cerise}{Cereza}{كَرز}
+\writepageDic{Cerise}{Cereza}{كَـــرز}
 %10.chameau
 \paintpage{chameau.jpg}
-\writepage{Chameau}{Camello}{جَـمـل}
+\writepageDic{Chameau}{Camello}{جَـــمـــل}
 %11.chat
 \paintpage{chat.jpg}
-\writepage{Chat}{Gato}{قَطّ}
+\writepageDic{Chat}{Gato}{قَـــطّ}
 %12.Cobra
 \paintpage{cobra.png}
-\writepage{Cobra}{Cobra}{كـوبـرا}
+\writepageDic{Cobra}{Cobra}{كـــوبـــرا}
 %13.koala
 \paintpage{koala.png}
-\writepage{Koala}{Coala}{كوالا}
+\writepageDic{Koala}{Coala}{كـــوالا}
 %14.scorpion
 \paintpage{scorpion.png}
-\writepage{Scorpion}{Escorpión}{عَقرَب}
+\writepageDic{Scorpion}{Escorpión}{عَـــقـــرَب}
 %15.elephant
 \paintpage{elephant.jpg}
-\writepage{Éléphant}{Elefante}{الفيل}
+\writepageDic{Éléphant}{Elefante}{الـــفـــيـــل}
 %16.fennec
 \paintpage{fennec.jpg}
-\writepage{Fennec}{Fenec}{فَـنَـك}
+\writepageDic{Fennec}{Fenec}{فَـــنَـــك}
 %17.fraise
 \paintpage{fraise.png}
-\writepage{Fraise}{Fresa}{فَراوِلَة}
+\writepageDic{Fraise}{Fresa}{فَـــراوِلَـــة}
 %18.gazelle
 \paintpage{gazelle.png}
-\writepage{Gazelle}{Gacela}{غَزال}
+\writepageDic{Gazelle}{Gacela}{غَـــزال}
 %19.girafe
 \paintpage{girafe.jpg}
-\writepage{Girafe}{Jirafa}{زَرافة}
+\writepageDic{Girafe}{Jirafa}{زَرافـــة}
 %20.gorille
 \paintpage{gorille.png}
-\writepage{Gorille}{Gorila}{غـوريـلا}
+\writepageDic{Gorille}{Gorila}{غـــوريـــلا}
 %21.limonade
 \paintpage{limonade.png}
-\writepage{Limonade}{Limonada}{ليمونادا}
+\writepageDic{Limonade}{Limonada}{لـــيـــمـــونـــادا}
 %22.macaroni
 \paintpage{maraconis.png}
-\writepage{Macaroni}{Macarrones}{مَـكَـرونـة}
+\writepageDic{Macaroni}{Macarrones}{مَـــكَـــرونـــة}
 %23.marmelade
 \paintpage{marmelade.png}
-\writepage{Marmelade}{Marmelada}{ مَـرمَــلـاد}
+\writepageDic{Marmelade}{Marmelada}{ مَـــرمَـــلـــاد}
 %24.savon
 \paintpage{savon.png}
-\writepage{Savon}{Jabón}{صابون}
+\writepageDic{Savon}{Jabón}{صـــابـــون}
 %25.the
 \paintpage{tea.png}
-\writepage{Thé}{Té}{شاي}
+\writepageDic{Thé}{Té}{شـــاي}
 %26.sucre
 \paintpage{sucre.png}
-\writepage{Sucre}{Azúcar}{سَكَر}
+\writepageDic{Sucre}{Azúcar}{سَـــكَـــر}
 %27.tomate
 \paintpage{tomates.png}
-\writepage{Tomate}{Tomate}{طَماطِم}
+\writepageDic{Tomate}{Tomate}{طَـــمـــاطِـــم}
 %28.vanille
 \paintpage{vanille.png}
-\writepage{Vanille}{La vainilla}{الفانيليا}
+\writepageDic{La vanille}{La vainilla}{الـــفـــانـــيـــلـــيـــا}
 %29.gitar
 \paintpage{guitar.png}
-\writepage{Guitare}{Guitarra}{غيتار}
+\writepageDic{Guitare}{Guitarra}{غـــيـــتـــار}
 %31.vache taureau
 \paintpage{vache.jpg}
-\writepage{Vache ~ Taureau}{Vacha ~ Toro}{بَقَرة  ثَور}
+\writepageDic{Vache ~~~ Taureau}{Vacha ~~~ Toro}{بَـــقَـــرة ~~~ ثَـــور}
 %30.Lait
 \paintpage{lait.jpg}
-\writepage{Lait}{Leche}{لَـبَـن}
+\writepageDic{Lait}{Leche}{لَـــبَـــن}
 %31.Page de fin ---
 \displayEndPage
-
+%\end{comment}
 \begin{comment}
 %-1 page de garde Volume 2 - La mer
 \writeCover{mer.png}{2}
@@ -210,241 +234,215 @@
 \writeConcept{diamond.png}
 %1.La mer - Image importante
 \paintpage{mer.png}
-\writepage{La mer}{Al mar}{الــبَــحــرَ}
+\writepageDic{La mer}{Al mar}{الـــبَـــحـــرَ}
 %2.Jarre
 \paintpage{jarre.png}
-\writepage{Jarre}{Jarra}{جُرة}
+\writepageDic{Jarre}{Jarra}{جُـــرة}
 %3.Génie
 \paintpage{genie.png}
-\writepage{Génie}{Genio}{جِــنّــي}
+\writepageDic{Génie}{Genio}{جِـــنّـــي}
 %4.Séraphim
 \paintpage{seraphim.png}
-\writepage{Séraphin}{Serafín}{سّـيـرافـيـم}
+\writepageDic{Séraphin}{Serafín}{سّـــيـــرافـــيـــم}
 %5.Cosmos
 \paintpage{azimut.png}
-\writepage{Cosmos}{Cosmos}{القَسموس}
+\writepageDic{Cosmos}{Cosmos}{الـــقَـــســـمـــوس}
 %6.crabe
 \paintpage{crab.png}
-\writepage{Crabe}{Cangrejo}{كَراب}
+\writepageDic{Crabe}{Cangrejo}{كَـــراب}
 %7.dauphin
 \paintpage{dauphin.png}
-\writepage{Dauphin}{Delfín}{دُلـفـيـن}
+\writepageDic{Dauphin}{Delfín}{دُلـــفـــيـــن}
 %8.Baracouda
 \paintpage{baracouda.png}
-\writepage{Barracuda}{Barracuda}{باراكودا}
+\writepageDic{Barracuda}{Barracuda}{بـــاراكـــودا}
 %9.Thon - Amélioré l'image - Il faut que soit une animal vivant
 \paintpage{thon.png}
-\writepage{Le thon}{El Atún}{أَلــتــونــه}
+\writepageDic{Le thon}{El Atún}{أَلـــتـــونـــه}
 %10.Saumon - Amélioré l'image - Il faut que soit une animal vivant
 \paintpage{saumon.png}
-\writepage{Saumon}{Salmón}{ســالِــمــون}
+\writepageDic{Saumon}{Salmón}{ســـالِـــمـــون}
 %11.Elixir
 \paintpage{alixir.png}
-\writepage{L'élixir}{El elixir}{الإكـسـيـر}
+\writepageDic{L'élixir}{El elixir}{الإكـــســـيـــر}
 %12.Emeraude
 \paintpage{emerald.png}
-\writepage{L'émeraude}{La esmeralda}{الــزُّمُــرُّد}
+\writepageDic{L'émeraude}{La esmeralda}{الـــزُّمُـــرُّد}
 %13.Musc
 \paintpage{musc.png}
-\writepage{Le musc}{Almizcle}{الـمِـسـك}
+\writepageDic{Le musc}{Almizcle}{الـــمِـــســـك}
 %14.Ambre
 \paintpage{amber.png}
-\writepage{Ambre}{Ámbar}{عَـنـبَـر}
+\writepageDic{Ambre}{Ámbar}{عَـــنـــبَـــر}
 %15.Amethyts
 \paintpage{amethyst.png}
-\writepage{Améthyste}{Amatista}{جَــمَــشــت}
+\writepageDic{Améthyste}{Amatista}{جَـــمَـــشـــت}
 %16.Deniers
 \paintpage{money.png}
-\writepage{Denier}{Dineros}{دينار}
+\writepageDic{Denier}{Dineros}{ديـــنـــار}
 %17.Opaline
 \paintpage{opaline.png}
-\writepage{L'opaline}{El opalino}{الأوبـالـيـن}
+\writepageDic{L'opaline}{El opalino}{الأوبـــالـــيـــن}
 %18.Quartz
 \paintpage{quartz.png}
-\writepage{Quartz}{Cuarzo}{كـوارتَـز}
+\writepageDic{Quartz}{Cuarzo}{كـــوارتَـــز}
 %19.Talisman
 \paintpage{talisman.png}
-\writepage{Talisman}{Talismán}{تعويذة}
+\writepageDic{Talisman}{Talismán}{تـــعـــويـــذة}
 %20.Topaz
 \paintpage{topaz.png}
-\writepage{Topaz}{Topacio}{توباز}
+\writepageDic{Topaz}{Topacio}{تـــوبـــاز}
 %21.blouse (femme qui peint)
 \paintpage{blouse.png}
-\writepage{Blouse}{Blusa}{بَـلـوزَة}
+\writepageDic{Blouse}{Blusa}{بَـــلـــوزَة}
 %22.Romatisme
 \paintpage{romantique.png}
-\writepage{Romantique}{Romántico}{رومـانـسـي}
+\writepageDic{Romantique}{Romántico}{رومـــانـــســـي}
 %23.Azur
 \paintpage{azur.png}
-\writepage{Azur}{Azur}{أزور}
+\writepageDic{Azur}{Azur}{أزور}
 %24.Carmin
 \paintpage{carmin.png}
-\writepage{Carmin}{Carmin}{قِـرمِـزيّ}
+\writepageDic{Carmin}{Carmin}{قِـــرمِـــزيّ}
 %25.Dorée
 \paintpage{doree.png}
-\writepage{Doréé}{Dorado}{ذَهَــبــيّ}
+\writepageDic{Doréé}{Dorado}{ذَهَـــبـــيّ}
 %26.guitar
 \paintpage{guitar.png}
-\writepage{Guitare}{Guitarra}{غـيـتـارْ}
+\writepageDic{Guitare}{Guitarra}{غـــيـــتـــارْ}
 %27.tambour
 \paintpage{tambour.png}
-\writepage{Tambour}{Tambor}{طَبل}
+\writepageDic{Tambour}{Tambor}{طَـــبـــل}
 %28.music
 \paintpage{flamenco.png}
-\writepage{La musique}{La música}{الــمــوســيــقــى}
+\writepageDic{La musique}{La música}{الـــمـــوســـيـــقـــى}
 %29.divan
 \paintpage{divan.png}
-\writepage{Divan}{Diván}{ديوان}
+\writepageDic{Divan}{Diván}{ديـــوان}
 %30.chess
 \paintpage{chess.png}
-\writepage{Les Échecs}{Ajedrez}{الــشِــطــرَنــج}
+\writepageDic{Les Échecs}{Ajedrez}{الـــشِـــطـــرَنـــج}
 %31.Flamant rose
 \paintpage{flamant.png}
-\writepage{Flamant}{Flamenco}{الـفَـلامِـنـجـو}
+\writepageDic{Flamant}{Flamenco}{الـــفَـــلامِـــنـــجـــو}
 %32.Sel
 \paintpage{sel.png}
-\writepage{Le sel}{Al sal}{الــمِــلــحَ}
+\writepageDic{Le sel}{Al sal}{الـــمِـــلـــحَ}
 %33.Canal
 \paintpage{canal.png}
-\writepage{Canal}{Canal}{قَناة}
+\writepageDic{Canal}{Canal}{قَـــنـــاة}
 %34.----FIN---
 \displayEndPage
 \newpage
-
+\end{comment}
+\begin{comment}
 %-1 page de garde Volume 3 - La science
 \writeCover{docteur.png}{3}
 %0 Arbre concept tricolor
 \writeConcept{tricolorTree.png}
 %1.docteur - Image importante
 \paintpage{docteur.png}
-\writepage{Docteur}{Doctor}{دُكتور}
+\writepageDic{Docteur}{Doctor}{دُكـــتـــور}
 %2.
 \paintpage{alchimie.png}
-\writepage{Alchimie}{Alquimia}{الكيميا}
+\writepageDic{Alchimie}{Alquimia}{الـــكـــيـــمـــيـــا}
 %3.
 \paintpage{alambic.png}
-\writepage{Alambic}{Alambic}{الانـبـيـق}
+\writepageDic{Alambic}{Alambic}{الانـــبـــيـــق}
 %4.
 \paintpage{algebre.png}
-\writepage{Algèbre}{Álgebra}{الـجَـبـرَ}
+\writepageDic{Algèbre}{Álgebra}{الـــجَـــبـــرَ}
 %5.
 \paintpage{algo.png}
-\writepage{Algorithme}{Algoritmo}{الـخـوارِزميّـة}
+\writepageDic{Algorithme}{Algoritmo}{الـــخـــوارِزمـــيّـــة}
 %6.
 \paintpage{acacia.png}
-\writepage{Acacia}{Acacia}{أكـاسيا}
+\writepageDic{Acacia}{Acacia}{أكـــاســـيـــا}
 %7.
 \paintpage{anis.png}
-\writepage{Anis}{Anís}{يانسون}
+\writepageDic{Anis}{Anís}{يـــانـــســـون}
 %8.
 \paintpage{aubergine.png}
-\writepage{Aurbergine}{Berenjena}{بَـاذِنـجَـان}
+\writepageDic{Aurbergine}{Berenjena}{بَـــاذِنـــجَـــان}
 %9.
 \paintpage{basilic.png}
-\writepage{Basilic}{Albahaca}{لـحـبـق}
+\writepageDic{Basilic}{Albahaca}{لـــحـــبـــق}
 %10.
 \paintpage{cafe.png}
-\writepage{Café}{Café}{قَهوة}
+\writepageDic{Café}{Café}{قَـــهـــوة}
 %11.
 \paintpage{cotton.png}
-\writepage{Le coton}{Algodón}{الــقُــطــن}
+\writepageDic{Le coton}{Algodón}{الــقُــطــن}
 %12.
 \paintpage{cannesucre.png}
-\writepage{Canne à Sucre}{Caña de azúcar}{قَصَب  سُكَر}
+\writepageDic{Canne à Sucre}{Caña de azúcar}{قَـــصَـــب ~~~ سُـــكَـــر}
 %13.
 \paintpage{chemise.png}
-\writepage{Chemise}{Camisa}{قَـمـيـص}
+\writepageDic{Chemise}{Camisa}{قَـــمـــيـــص}
 %14.
 \paintpage{corbeau.png}
-\writepage{Corbeau}{Cuervo}{غُراب}
+\writepageDic{Corbeau}{Cuervo}{غُـــراب}
 %15.
 \paintpage{cumin.png}
-\writepage{Cumin}{Comino}{كَمَّونِ}
+\writepageDic{Cumin}{Comino}{كَـــمَّـــونِ}
 %16.
 \paintpage{curcumin.png}
-\writepage{Le Curcuma}{La Cúrcuma}{أَلـكَـركُـمَ}
+\writepageDic{Le Curcuma}{La Cúrcuma}{أَلـــكَـــركُـــمَ}
 %17.
 \paintpage{ebene.png}
-\writepage{Ébène}{Ébano}{آبَنوس}
+\writepageDic{Ébène}{Ébano}{آبَـــنـــوس}
 %18.
 \paintpage{epinard.png}
-\writepage{Épinard}{Espinaca}{سَـبـانِـخُ}
+\writepageDic{Épinard}{Espinaca}{سَـــبـــانِـــخُ}
 %19.
 \paintpage{gigembre.png}
-\writepage{Gingembre}{Jengibre}{زَنـجَـبـيـل}
+\writepageDic{Gingembre}{Jengibre}{زَنـــجَـــبـــيـــل}
 %20.
 \paintpage{grenadine.png}
-\writepage{La grenadine}{La granadina}{أَلغریناديـن}
+\writepageDic{La grenadine}{La granadina}{أَلـــغـــریـــنـــاديـــن}
 %21.
 \paintpage{jasmin.png}
-\writepage{Jasmin}{Jazmín}{يـاسَـمـيـن}
+\writepageDic{Jasmin}{Jazmín}{يـــاسَـــمـــيـــن}
 %22.
 \paintpage{kiwi.png}
-\writepage{Kiwi}{Kiwi}{كيوي}
+\writepageDic{Kiwi}{Kiwi}{كـــيـــوي}
 %23.
 \paintpage{lavande.png}
-\writepage{Lavande}{Lavanda}{لافَندَر}
+\writepageDic{Lavande}{Lavanda}{لافَـــنـــدَر}
 %24.
 \paintpage{lotus.png}
-\writepage{Lotus}{Loto}{لــوتَــس}
+\writepageDic{Lotus}{Loto}{لـــوتَـــس}
 %25.
 \paintpage{marjolaine.png}
-\writepage{Marjolaine}{Mejorana}{ مَـردَقـوش}
+\writepageDic{Marjolaine}{Mejorana}{ مَـــردَقـــوش}
 %26.
 \paintpage{meringue.png}
-\writepage{Meringue}{Merengue}{مَرَنغ}
+\writepageDic{Meringue}{Merengue}{مَـــرَنـــغ}
 %27.
 \paintpage{pantalon.png}
-\writepage{Pantalon}{Pantalones}{بَنطَلون}
+\writepageDic{Pantalon}{Pantalones}{بَـــنـــطَـــلـــون}
 %28.
 \paintpage{riz.png}
-\writepage{Le riz}{El Arroz}{الأَرز}
+\writepageDic{Le riz}{El Arroz}{الأَرز}
 %29.
 \paintpage{romarin.png}
-\writepage{Romarin}{Romero}{روزماري}
+\writepageDic{Romarin}{Romero}{روزمـــاري}
 %30.
 \paintpage{safran.png}
-\writepage{Safran}{Azafrán}{زعفران}
+\writepageDic{Safran}{Azafrán}{زعـــفـــران}
 %31.
 \paintpage{semoule.png}
-\writepage{Semoule}{Sémola}{سَــمــيــد}
+\writepageDic{Semoule}{Sémola}{سَـــمـــيـــد}
 %32.
 \paintpage{sesame.png}
-\writepage{Sésame}{Sésamo}{سِــمــسِــم}
+\writepageDic{Sésame}{Sésamo}{سِـــمـــسِـــم}
 %33.
 \paintpage{sirroco.png}
-\writepage{Sirocco}{Siroco}{سـيـروكـو}
+\writepageDic{Sirocco}{Siroco}{ســـيـــروكـــو}
 %34.
 \paintpage{sirop.png}
-\writepage{Sirop}{Jarabe}{شَــراب}
+\writepageDic{Sirop}{Jarabe}{شَـــراب}
 %34.---FIN---
 \displayEndPage
-
 \end{comment}
-
-
-%Folder Image
-\begin{comment}
- acacia.png      can-a-sucre.png    echecs.png      lavande.png      savon.png 1
- alambic.png     caramel.png  1     elephant.png 1  limonade.png 1   scorpion.png
- alchimie.png    carmin.png         elixir.png      lotus.png        sel.png
- algebre.png     cerise.png   1     emeraude.png    macaronis.png 1  semoule.png
- algo.png        chameau.png  1     epinard.png     mamanpapa.png 1  seraphim.png
- ambre.png       chat.png           fennec.png   1  marjolaine.png   sesame.png
- amethyst.png    chemise.png        flamenco.png    marmelade.png 1  siroco.png
- anis.png        chocolat.png 1     fraise.png  1   meringue.png     sirop.png
- aubergine.png   cobra.png          gazelle.png 1   mer.png          sucre.png 1
- azimut.png      corbeau.png        génie.png       musc.png         talsiman.png
- azur.png        cotton.png  1      gingembre.png   musique.png      tambour.png
- baboon.png  1   crabe.png   1      girafe.png 1    opaline.png      the.png 1
- balcon.png  1   cumin.png          gorille.png     pantalon.png     thon.png
- baracouda.png   curcuma.png        grenadine.png   papaye.png 1     tomate.png 1
- basilic.png     dauphin.png 1      guitar.png  1   quartz.png       topaz.png
- blouse.png      deniers.png        jarre.png       riz.png          vache+taur.png 1
- cacao.png  1    divan.png          jasmin.png      romanrin.png     vanille.png 1
- cafe.png        docteur.png        kiwi.png        romantique.png	
- canal.png       dorée.png          koala.png       safran.png
- canari.png  1   ebano.png          lait.png        saumon.png
-\end{comment}
-
 \end{document}
